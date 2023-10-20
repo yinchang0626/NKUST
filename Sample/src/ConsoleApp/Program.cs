@@ -30,6 +30,11 @@ namespace ConsoleApp
                 Console.WriteLine(string.Format("編號 :{0} 名稱:{1} 地點:{2}", x.Id, x.DisplayName, x.Kind));
             });
 
+
+
+
+
+
             Console.ReadKey();
         }
     }
