@@ -27,7 +27,7 @@ namespace ConsoleApp
             Console.WriteLine(string.Format("分析完成，共有{0}筆資料", jsonDatas.Count));
             jsonDatas.ForEach(x =>
             {
-                Console.WriteLine(string.Format("編號 :{0} 名稱:{1} 地點:{2}", x.Id, x.DisplayName, x.Kind));
+                Console.WriteLine(string.Format("編號 :{0} 名稱:{1} 地點:{2}", x.Id, x.PrgName, x.PrgPlace));
             });
 
             Console.ReadKey();
