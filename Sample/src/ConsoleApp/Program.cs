@@ -33,11 +33,6 @@ namespace ConsoleApp
             Console.ReadKey();
 
             //測試上傳
-
-
-
-
-
         }
     }
 }
