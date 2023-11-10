@@ -7,12 +7,6 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Models
 {
-    public class ActivityDto
-    {
-        public Activity Activity { get; set; }
-        public string Token { get; set; }
-    }
-
     public partial class Activity
     {
         public long Id { get; set; }
@@ -60,6 +54,11 @@ namespace ConsoleApp.Models
 
         [JsonProperty("IMAGE2")]
         public string Image2 { get; set; }
+
+        public override string ToString()
+        {
+            return $"名稱:{this.PrgName}, 地點:{this.PrgPlace}, 時間:{this.PrgDate} {this.PrgStime}";
+        }
     }
 }
 

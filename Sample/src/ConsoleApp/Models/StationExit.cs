@@ -15,5 +15,10 @@ namespace ConsoleApp.Models
         public bool Elevator { get; set; }
         public string StationName { get; set; }
         public string ExitName { get; set; }
+
+        public override string ToString()
+        {
+            return $"名稱:{this.StationName}, 出口站點:{this.ExitName}";
+        }
     }
 }

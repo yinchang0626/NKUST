@@ -9,10 +9,19 @@ using System.Xml.Linq;
 
 namespace ConsoleApp.Services
 {
-    public class ImportXmlService
+    public class ImportXmlService : IImportService<StationExit>
     {
-        public ImportXmlService()
+        public void Display(List<StationExit> datas)
         {
+            datas.ForEach(x =>
+            {
+                Console.WriteLine(x);
+            });
+        }
+
+        public List<StationExit> Filter(List<StationExit> datas)
+        {
+            return datas.ToList();
         }
 
         public List<StationExit> LoadFormFile(string filePath)
@@ -39,6 +48,11 @@ namespace ConsoleApp.Services
                     return item;
                 })
                 .ToList();
+        }
+
+        public bool SaveFormFile(string filePath)
+        {
+            throw new NotImplementedException();
         }
     }
 }

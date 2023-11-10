@@ -1,5 +1,6 @@
 ﻿using ConsoleApp.Models;
 using ConsoleApp.Services;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -7,28 +8,34 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            ImportXmlService xmlService = new ImportXmlService();
-
-            List<StationExit> datas = xmlService.LoadFormFile(Utils.FilePath.GetFullPath("北捷站點.xml"));
-
-            Console.WriteLine(string.Format("分析完成，共有{0}筆資料", datas.Count));
-
-            datas.ForEach(x =>
-            {
-                Console.WriteLine(string.Format("編號 :{0} 名稱:{1}({2}) 描述:{3}", x.StationID, x.StationName, x.ExitName, x.LocationDescription));
-            });
+            IImportService<Parking> csvService = new ImportCsvService();
+            IImportService<StationExit> xmlService = new ImportXmlService();
+            IImportService<Activity> jsonService = new ImportJsonService();
 
 
-            var jsonService = new ImportJsonService();
+            List<Parking> csvDatas = csvService.LoadFormFile(Utils.FilePath.GetFullPath("高雄停車場.csv"));
+
+            csvDatas = csvService.Filter(csvDatas);
+
+            csvService.Display(csvDatas);
+
+            Console.ReadKey();
+
+
+            List<StationExit> xmlDatas = xmlService.LoadFormFile(Utils.FilePath.GetFullPath("北捷站點.xml"));
+
+            xmlDatas = xmlService.Filter(xmlDatas);
+
+            xmlService.Display(xmlDatas);
+
+            Console.ReadKey();
 
 
             var jsonDatas = jsonService.LoadFormFile(Utils.FilePath.GetFullPath("高雄活動.json"));
 
-            Console.WriteLine(string.Format("分析完成，共有{0}筆資料", jsonDatas.Count));
-            jsonDatas.ForEach(x =>
-            {
-                Console.WriteLine(string.Format("編號 :{0} 名稱:{1} 地點:{2}", x.Id, x.PrgName, x.PrgPlace));
-            });
+            jsonDatas = jsonService.Filter(jsonDatas);
+
+            jsonService.Display(jsonDatas);
 
             Console.ReadKey();
         }
