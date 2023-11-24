@@ -1,0 +1,59 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<ConsoleApp.Models.Parking>
+@{
+    ViewData["Title"] = "高雄市公有停車場列表";
+}
+<h1>高雄市公有停車場列表</h1>
+@* <ul>
+    @foreach (var item in Model)
+    {
+        <li>@(Model.IndexOf(item) + 1).  @item.場名 - @item.收費標準 </li>
+    }
+</ul> *@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>型式</th>
+            <th>行政區</th>
+            <th>場名</th>
+            <th>位置</th>
+            <th>大車</th>
+            <th>小車</th>
+            <th>機車</th>
+            <th>收費標準</th>
+            <th>管理業者</th>
+            <th>聯絡電話</th>
+            <th>履約起迄</th>
+            <th>是否有空位</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(Model.IndexOf(item) + 1)</td>
+                <td>@item.型式</td>
+                <td>@item.行政區</td>
+                <td>@item.場名</td>
+                <td>@item.位置</td>
+                <td>@item.大車</td>
+                <td>@item.小車</td>
+                <td>@item.機車</td>
+                <td>@item.收費標準</td>
+                <td>@item.管理業者</td>
+                <td>@item.聯絡電話</td>
+                <td>@item.履約起迄</td>
+                <td>@(item.IsHasSpace ? "是" : "否")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="13">共有 @Model.Count 筆資料</td>
+        </tr>
+    </tfoot>
+</table>
