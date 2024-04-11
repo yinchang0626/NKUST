@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Models
 {
+    public class Address
+    {
+        public string Area { get; set; }
+        public string Road { get; set; }
+    }
+
+    public class Point 
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
     public class Parking : IComparable
     {
         public string 型式 { get; set; }

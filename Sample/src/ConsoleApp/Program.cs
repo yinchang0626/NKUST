@@ -1,6 +1,8 @@
 ﻿using ConsoleApp.Models;
 using ConsoleApp.Services;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 
 namespace ConsoleApp
 {
@@ -14,6 +16,30 @@ namespace ConsoleApp
 
 
             List<Parking> csvDatas = csvService.LoadFormFile(Utils.FilePath.GetFullPath("高雄停車場.csv"));
+
+            var csvSet = csvDatas
+                .GroupBy(x => x.行政區)
+                .ToDictionary(x => x.Key, y => y.ToList());
+
+            var 三民區停車場s = csvSet["三民區"];
+
+
+            var t = csvDatas
+                .Select(x => x.行政區)
+                .Distinct()
+                .Aggregate((x, y) =>
+                {
+                    return $"{x} ,{y}";
+                });
+
+
+
+            var stt = Newtonsoft.Json.JsonConvert.SerializeObject(csvSet);
+
+            File.WriteAllText(Utils.FilePath.GetFullPath("高雄停車場.json"), stt);
+
+
+
 
             csvDatas = csvService.Filter(csvDatas);
 
