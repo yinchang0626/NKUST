@@ -67,17 +67,14 @@
 
                         @if (Model.IsApply(item))
                         {
-                            <form asp-controller="Home" asp-action="CancelApply" method="post">
-                                <input type="hidden" name="prgId" value="@item.PrgId" />
-                                <button class="btn btn-sm btn-warning"><i class="fa fa-minus"></i></button>
-                            </form>
+                            <input type="hidden" name="prgId" value="@item.PrgId" />
+                            <button class="btn btn-sm btn-warning" name="cancel-apply-button"><i class="fa fa-minus"></i></button>
                         }
                         else
                         {
-                            <form asp-controller="Home" asp-action="Apply" method="post">
-                                <input type="hidden" name="prgId" value="@item.PrgId" />
-                                <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></button>
-                            </form>
+                            <input type="hidden" name="prgId" value="@item.PrgId" />
+                            <button class="btn btn-sm btn-primary" name="apply-button"><i class="fa fa-plus"></i></button>
+
 
                         }
 
@@ -102,6 +99,20 @@
 {
     <script type="text/javascript">
         $(function () {
+            $('button[name="apply-button"]').on('click', (x) => {
+                const proId = $(x.currentTarget).siblings('input').val();
+                $.post(`api/activities/apply/${proId}`, callBack);
+
+                function callBack(y) { 
+                    console.log(proId);
+                }
+            });
+            $('button[name="cancel-apply-button"]').on('click', (x) => {
+                const proId = $(x.currentTarget).siblings('input').val();
+                $.post(`api/activities/apply/${proId}`, function (y) {
+                    console.log('success', y);
+                });
+            });
             console.log('init');
         })
     </script>

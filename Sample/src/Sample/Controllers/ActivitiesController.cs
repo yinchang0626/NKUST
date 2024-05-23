@@ -18,10 +18,23 @@ namespace Sample.Controllers
         }
 
         [HttpPost]
-        [Route("apply")]
-        public void Apply([FromQuery] long prgId)
+        [Route("apply/{prgId}")]
+        public IActionResult Apply(long prgId)
         {
-            this.activityService.Apply(prgId, User?.Identity?.Name);
+           // this.activityService.Apply(prgId, User?.Identity?.Name);
+
+            return Ok();
+
+            //var result =activityService.List()
+        }
+
+        [HttpPost]
+        [Route("cancel-apply/{prgId}")]
+        public IActionResult CancelApply(long prgId)
+        {
+            // this.activityService.Apply(prgId, User?.Identity?.Name);
+
+            return Ok();
 
             //var result =activityService.List()
         }
