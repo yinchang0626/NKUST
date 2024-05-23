@@ -1,9 +1,13 @@
-﻿namespace Sample.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Sample.Models
 {
     public class ActivityApply
     {
-
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
 
         public long PrgId { get; set; }
 

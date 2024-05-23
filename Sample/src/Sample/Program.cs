@@ -21,7 +21,7 @@ namespace Sample
                 .AddEntityFrameworkStores<ApplicationDbContext>();//Model
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;//Controller
 
-            builder.Services.AddSingleton<ActivityService>();
+            builder.Services.AddTransient<ActivityService>();
 
             var app = builder.Build();
 

@@ -46,7 +46,8 @@ namespace Sample.Controllers
 
             if (apply.HasValue && apply.Value)
             {
-                datas = applies.Where(x => x.UserName == User?.Identity?.Name)
+                datas = applies
+                    .Where(x => x.UserName == User?.Identity?.Name)
                     .Select(x => datas.Single(y => y.PrgId == x.PrgId)).ToList();
             }
 

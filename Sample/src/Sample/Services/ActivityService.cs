@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Sample.Data;
 using Sample.Models;
 using System;
 using System.Collections.Generic;
@@ -11,62 +13,66 @@ namespace Sample.Services
 {
     public class ActivityService
     {
+        private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        private List<Activity> activities = new List<Activity>();
-        private List<ActivityApply> activityApplies = new List<ActivityApply>();
+        // private List<Activity> activities = new List<Activity>();
+        // private List<ActivityApply> activityApplies = new List<ActivityApply>();
 
         public ActivityService(
+            ApplicationDbContext context,
             IWebHostEnvironment webHostEnvironment)
         {
+            this.context = context;
             this.webHostEnvironment = webHostEnvironment;
+        }
 
-            string webRootPath = webHostEnvironment.WebRootPath;
-            var str = System.IO.File.ReadAllText(Path.Combine(webRootPath, "高雄活動.json"));
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Activity>>(str)!;
-
-            activities = json
-                .GroupBy(x => x.PrgId)
-                .Select(x => x.ToList().FirstOrDefault())
-                .ToList()!;
+        public Activity? Get(long prgId)
+        {
+            return context.Activities.Find(prgId);
         }
 
         public List<Activity> List()
         {
-            return activities;
+            return context.Activities.ToList();
         }
 
         public List<ActivityApply> GetApplies()
         {
-            return activityApplies;
+            return context.ActivityApplies.ToList();
         }
 
         public void Remove(long prgId)
         {
-            var toDelete = activities.Where(x => x.PrgId == prgId).FirstOrDefault();
+            var toDelete = context.Activities
+                .Where(x => x.PrgId == prgId)
+                .FirstOrDefault();
 
-            activities.Remove(toDelete);
+            context.Activities.Remove(toDelete);
+
+            context.SaveChanges();
         }
 
         public void Add(Activity activity)
         {
-            if (activities.Any(x => x.PrgId == activity.PrgId))
+            if (context.Activities.Any(x => x.PrgId == activity.PrgId))
             {
                 return;
             }
 
-            activities.Add(activity);
+            context.Activities.Add(activity);
+
+            context.SaveChanges();
         }
 
         public void Update(Activity activity)
         {
-            var targets = activities.Where(x => x.PrgId == activity.PrgId).ToList();
+            var targets = context.Activities.Where(x => x.PrgId == activity.PrgId).ToList();
 
             if (targets.Count != 1)
                 return;
 
             var target = targets.Single();
-            target.Id = activity.Id;
             target.PrgName = activity.PrgName;
             target.PrgAct = activity.PrgAct;
             target.PrgDate = activity.PrgDate;
@@ -74,27 +80,31 @@ namespace Sample.Services
             target.PrgPlace = activity.PrgPlace;
             target.ItemDesc = activity.ItemDesc;
 
+            context.SaveChanges();
         }
 
         public void Apply(long prgId, string userName)
         {
-            var exist = this.activityApplies.Any(x => x.PrgId == prgId && x.UserName == userName);
+            var exist = this.context.ActivityApplies.Any(x => x.PrgId == prgId && x.UserName == userName);
 
             if (exist)
                 return;
 
-            this.activityApplies.Add(new ActivityApply() { UserName = userName, PrgId = prgId });
+            context.ActivityApplies.Add(new ActivityApply() { UserName = userName, PrgId = prgId });
 
+            context.SaveChanges();
         }
 
         public void CancelApply(long prgId, string userName)
         {
-            var exist = this.activityApplies.SingleOrDefault(x => x.PrgId == prgId && x.UserName == userName);
+            var exist = context.ActivityApplies.SingleOrDefault(x => x.PrgId == prgId && x.UserName == userName);
 
             if (exist != null)
             {
-                this.activityApplies.Remove(exist);
+                context.ActivityApplies.Remove(exist);
             }
+
+            context.SaveChanges();
         }
     }
 }
