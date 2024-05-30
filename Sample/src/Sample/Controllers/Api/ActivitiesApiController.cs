@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sample.Models;
 using Sample.Services;
 
 namespace Sample.Controllers
@@ -15,6 +16,14 @@ namespace Sample.Controllers
             )
         {
             this.activityService = activityService;
+        }
+
+        [HttpGet]
+        [Route("list")]
+
+        public List<Activity> List() 
+        {
+            return this.activityService.List();
         }
 
         [HttpPost]

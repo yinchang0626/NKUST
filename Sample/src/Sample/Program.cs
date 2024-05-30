@@ -7,8 +7,11 @@ namespace Sample
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -22,6 +25,14 @@ namespace Sample
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;//Controller
 
             builder.Services.AddTransient<ActivityService>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:4200");
+                                  });
+            });
 
             var app = builder.Build();
 
@@ -41,6 +52,8 @@ namespace Sample
             app.UseStaticFiles();//Controller
 
             app.UseRouting();//Controller
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();//Model
 

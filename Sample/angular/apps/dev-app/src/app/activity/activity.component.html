@@ -1,0 +1,32 @@
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>PrgId</th>
+      <th>Apply</th>
+      <th>PrgName</th>
+      <th>PrgAct</th>
+      <th>PrgDate</th>
+      <th>OrgName</th>
+      <th>PrgPlace</th>
+      <th>ItemDesc</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of activities(); track $index) {
+    <tr>
+      <td></td>
+      <td>{{ item.prgId }}</td>
+      <td>--</td>
+      <td>{{ item.prgName }}</td>
+      <td>{{ item.prgAct }}</td>
+      <td>{{ item.prgDate }}</td>
+      <td>{{ item.orgName }}</td>
+      <td>{{ item.prgPlace }}</td>
+      <td>{{ item.itemDesc }}</td>
+    </tr>
+
+    }
+  </tbody>
+</table>
