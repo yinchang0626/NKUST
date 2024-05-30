@@ -74,8 +74,6 @@
                         {
                             <input type="hidden" name="prgId" value="@item.PrgId" />
                             <button class="btn btn-sm btn-primary" name="apply-button"><i class="fa fa-plus"></i></button>
-
-
                         }
 
                     </td>
@@ -99,21 +97,40 @@
 {
     <script type="text/javascript">
         $(function () {
-            $('button[name="apply-button"]').on('click', (x) => {
-                const proId = $(x.currentTarget).siblings('input').val();
-                $.post(`api/activities/apply/${proId}`, callBack);
+            $('button[name="apply-button"], button[name="cancel-apply-button"]').on('click', (x) => {
 
-                function callBack(y) { 
-                    console.log(proId);
-                }
-            });
-            $('button[name="cancel-apply-button"]').on('click', (x) => {
                 const proId = $(x.currentTarget).siblings('input').val();
-                $.post(`api/activities/apply/${proId}`, function (y) {
-                    console.log('success', y);
-                });
+                const status = $(x.currentTarget.parentElement).siblings()[1];
+
+                if (status.innerHTML === 'Yes') {
+                    $.post(`api/activities-api/cancel-apply/${proId}`, callBack);
+
+                    function callBack(y) {
+                        status.innerHTML = 'No'
+
+                        $(x.currentTarget.firstChild).removeClass();
+                        $(x.currentTarget.firstChild).addClass('fa fa-plus');
+
+                        $(x.currentTarget).removeClass(['btn-warning', 'btn-primary']);
+                        $(x.currentTarget).addClass('btn-primary');
+                    }
+                }
+                else {
+                    $.post(`api/activities-api/apply/${proId}`, callBack);
+
+                    function callBack(y) {
+                        $(x.currentTarget.parentElement).siblings()[1].innerHTML = 'Yes';
+
+                        $(x.currentTarget.firstChild).removeClass();
+                        $(x.currentTarget.firstChild).addClass('fa fa-minus');
+
+                        $(x.currentTarget).removeClass(['btn-warning', 'btn-primary']);
+                        $(x.currentTarget).addClass('btn-warning');
+                    }
+                }
+
+
             });
-            console.log('init');
         })
     </script>
 }
